@@ -1,0 +1,59 @@
+name: SonarScanner for .NET - Cloud
+description: Makes it easy to use SonarScanner for .NET with SonarQube Cloud.
+
+branding:
+  icon: check
+  color: orange
+
+inputs:
+  sonarscanner-version:
+    description: The version of dotnet-sonarscanner to install (if not already installed). If omitted, the latest version will be used.
+    required: false
+    default: null
+
+  github-token:
+    description: The GitHub token.
+    required: false
+    default: ${{ github.token }}
+
+  project-key:
+    description: The Project key.
+    required: false
+    default: ${{ github.repository_owner }}_${{ github.event.repository.name }}
+
+  organization:
+    description: The organization.
+    required: false
+    default: ${{ github.repository_owner }}
+
+  sonar-token:
+    description: The SonarQube token.
+    required: true
+
+  jre-provisioning:
+    description: Whether to use automatic JRE provisioning.
+    required: false
+    default: true
+
+  additional-properties:
+    description: Additional properties when begin (Useful when handling test coverage).
+    required: false
+    default: ''
+
+  build-commands:
+    description: Build (and test) commands (dotnet or msbuild).
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: na1307/dotnet-sonarscanner-server@main
+      with:
+        sonarscanner-version: ${{ inputs.sonarscanner-version }}
+        github-token: ${{ inputs.github-token }}
+        project-key: ${{ inputs.project-key }}
+        sonar-token: ${{ inputs.sonar-token }}
+        sonar-host-url: https://sonarcloud.io
+        jre-provisioning: ${{ inputs.jre-provisioning }}
+        additional-properties: -o:"${{ inputs.organization }}" ${{ inputs.additional-properties }}
+        build-commands: ${{ inputs.build-commands }}
