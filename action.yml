@@ -36,7 +36,7 @@ inputs:
     default: true
 
   additional-properties:
-    description: Additional properties when begin (Useful when handling test coverage).
+    description: 'Additional properties when begin (Useful when handling test coverage). Note: You must use hyphens (-) and not slashes (/). Otherwise the action may fail.'
     required: false
     default: ''
 
@@ -47,7 +47,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: na1307/dotnet-sonarscanner-server@main
+    - uses: na1307/dotnet-sonarscanner-server@v1.0
       with:
         sonarscanner-version: ${{ inputs.sonarscanner-version }}
         github-token: ${{ inputs.github-token }}
