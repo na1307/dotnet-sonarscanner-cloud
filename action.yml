@@ -52,7 +52,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: na1307/dotnet-sonarscanner-server@v1.1
+    - uses: na1307/dotnet-sonarscanner-server@v1.0
       with:
         shell: ${{ inputs.shell }}
         sonarscanner-version: ${{ inputs.sonarscanner-version }}
