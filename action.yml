@@ -6,6 +6,11 @@ branding:
   color: orange
 
 inputs:
+  shell:
+    description: The shell to use in the build step. The default is pwsh for Windows runners and bash for non-Windows runners.
+    required: false
+    default: null
+
   sonarscanner-version:
     description: The version of dotnet-sonarscanner to install (if not already installed). If omitted, the latest version will be used.
     required: false
@@ -47,8 +52,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: na1307/dotnet-sonarscanner-server@v1.0
+    - uses: na1307/dotnet-sonarscanner-server@v1.1
       with:
+        shell: ${{ inputs.shell }}
         sonarscanner-version: ${{ inputs.sonarscanner-version }}
         github-token: ${{ inputs.github-token }}
         project-key: ${{ inputs.project-key }}

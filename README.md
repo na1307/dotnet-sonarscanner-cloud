@@ -1,22 +1,33 @@
 # SonarScanner for .NET - Cloud
-Makes it easy to use SonarScanner for .NET with SonarQube Cloud.
+## Overview
+**SonarScanner for .NET - Cloud:**
 
-Are you using SonarQube Server? Check out [dotnet-sonarscanner-server](https://github.com/na1307/dotnet-sonarscanner-server)!
+* Simplifies .NET project analysis using `dotnet-sonarscanner` with SonarQube Cloud.
+* Automatically installs required tools and dependencies (e.g., .NET and `dotnet-sonarscanner`).
+* Supports customizable build and test workflows.
 
-# Features
-* Analyze your project/solution using the .NET Core version of SonarScanner for .NET (`dotnet-sonarscanner`)
-* Check if .NET installed and install it if not installed.
-* Check if `dotnet-sonarscanner` installed and install it if not installed.
-* Install a specific version of `dotnet-sonarscanner`
-* Customize build commands
+If you're using **SonarQube Server**, consider using the companion action: [dotnet-sonarscanner-server](https://github.com/na1307/dotnet-sonarscanner-server).
 
-# Inputs
-See [action.yml](action.yml).
+## Features
+* **Automatic Tool Detection and Installation:**
+  * Checks for installed .NET and` dotnet-sonarscanner`.
+  * Installs the required tools if not already available.
+  * Supports specifying a particular version of `dotnet-sonarscanner`.
+* **Customizable Build and Test Commands:**
+  * Define the shell and commands for building and testing your project.
+  * Flexibility to include test coverage and additional properties.
 
-> Note: You must use hyphens (-) and not slashes (/) in the `additional-properties` input. Otherwise the action may fail.
+## Inputs
+See the [action.yml](action.yml) for details about all available inputs.
 
-# Example Workflows
-Build only:
+### Key Input Notes
+* `additional-properties`:
+  * Specify extra SonarQube properties.
+  * Ensure hyphens (`-`) are used instead of slashes (`/`) to avoid action failures.
+
+## Example Workflows
+### 1. Build Only Workflow
+This workflow performs a simple build and analysis with SonarQube.
 ```yml
 name: SonarCloud
 
@@ -47,8 +58,9 @@ jobs:
           sonar-token: ${{ secrets.SONAR_TOKEN }}
           build-commands: dotnet build
 ```
-
-Build and Test:
+----
+### 2. Build and Test Workflow with Coverage
+This workflow includes testing and coverage collection in addition to the build step.
 ```yml
 name: SonarCloud
 
@@ -85,3 +97,16 @@ jobs:
             dotnet build --no-restore
             dotnet coverage collect 'dotnet test --no-build --verbosity normal' -f xml  -o 'coverage.xml'
 ```
+----
+## Notes
+1. Authentication:
+    * Use GitHub Secrets to securely store your `SONAR_TOKEN` and other sensitive data.
+1. Test Coverage:
+    * Ensure you have installed and configured `dotnet-coverage` (or other coverage tools like `coverlet`) if collecting test coverage reports.
+1. Additional Customization:
+    * Add more commands as needed to meet your project requirements, such as linting or integration tests.
+
+## See also
+* [Using the SonarScanner for .NET](https://docs.sonarsource.com/sonarqube-cloud/advanced-setup/ci-based-analysis/sonarscanner-for-dotnet/using/) (Check out several additional properties)
+* [Configuring the SonarScanner for .NET](https://docs.sonarsource.com/sonarqube-cloud/advanced-setup/ci-based-analysis/sonarscanner-for-dotnet/configuring/)
+* [Analysis parameters for SonarScanner](https://docs.sonarsource.com/sonarqube-cloud/advanced-setup/analysis-parameters/) (Even more additional properties)
